@@ -1,3 +1,5 @@
+"""Cambio en nueva rama"""
+
 import dash
 from dash import dcc
 from dash import html
@@ -24,7 +26,7 @@ def load_data() -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["time"])
     df.set_index("date", inplace=True)
     return df
-    
+
 
 # Cargar datos
 data = load_data()
@@ -144,9 +146,9 @@ def generate_control_card():
                         ],
                         style=dict(width='30%')
                     ),
-                    
+
                     html.P(" ",style=dict(width='5%', textAlign='center')),
-                    
+
                     html.Div(
                         id="componente-hora",
                         children=[
@@ -180,8 +182,8 @@ def generate_control_card():
                         tooltip={"placement": "bottom", "always_visible": True},
                     )
                 ]
-            )     
-     
+            )
+
         ]
     )
 
@@ -189,7 +191,7 @@ def generate_control_card():
 app.layout = html.Div(
     id="app-container",
     children=[
-        
+
         # Left column
         html.Div(
             id="left-column",
@@ -201,7 +203,7 @@ app.layout = html.Div(
                 )
             ],
         ),
-        
+
         # Right column
         html.Div(
             id="right-column",
@@ -216,12 +218,12 @@ app.layout = html.Div(
                         html.B("Demanda energética total en Austria [MW]"),
                         html.Hr(),
                         dcc.Graph(
-                            id="plot_series",  
+                            id="plot_series",
                         )
                     ],
                 ),
 
-            
+
             ],
         ),
     ],
