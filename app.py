@@ -8,7 +8,6 @@ import pandas as pd
 import datetime as dt
 
 
-
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
@@ -20,15 +19,19 @@ app.config.suppress_callback_exceptions = True
 
 
 # Load data from csv
-def load_data():
-    # To do: Completar la función 
+def load_data() -> pd.DataFrame:
+    df = pd.read_csv("datos_energia.csv")
+    df["date"] = pd.to_datetime(df["time"])
+    df.set_index("date", inplace=True)
+    return df
     
 
 # Cargar datos
 data = load_data()
 
+
 # Graficar serie
-def plot_series(data, initial_date, proy):
+def plot_series(data: pd. DataFrame, initial_date: dt.datetime, proy: int):
     data_plot = data.loc[initial_date:]
     data_plot = data_plot[:-(120-proy)]
     fig = go.Figure([
@@ -89,7 +92,6 @@ def plot_series(data, initial_date, proy):
     return fig
 
 
-
 def description_card():
     """
     :return: A Div containing dashboard title & descriptions.
@@ -97,11 +99,19 @@ def description_card():
     return html.Div(
         id="description-card",
         children=[
-            #html.H5("Proyecto 1"),
             html.H3("Pronóstico de producción energética"),
             html.Div(
                 id="intro",
-                children="Esta herramienta contiene información sobre la demanda energética total en Austria cada hora según lo públicado en ENTSO-E Data Portal. Adicionalmente, permite realizar pronósticos hasta 5 dias en el futuro."
+                children=[
+                    html.P("Adaptado por Mateo Restrepo."),
+                    html.P(
+                        "Esta herramienta contiene información sobre la demanda energética "
+                        "total en Austria cada hora según lo públicado en ENTSO-E "
+                        "Data Portal. "
+                        "Adicionalmente, permite realizar pronósticos hasta 5 dias en"
+                        " el futuro."
+                    )
+                ]
             ),
         ],
     )
@@ -240,4 +250,4 @@ def update_output_div(date, hour, proy):
 
 # Run the server
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
